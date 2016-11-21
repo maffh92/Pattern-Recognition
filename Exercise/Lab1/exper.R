@@ -1,20 +1,45 @@
 #loading the data
-digit.dat = read.csv("mnist.csv", header = TRUE, sep = ",")
+digit.dat <- read.csv("dataset/mnist.csv", header = TRUE, sep = ",")
 #preprocessing the data
 digit.dat$label = as.factor(digit.dat$label)
 #checking stats. the result shows that a lot of pixels remain white for ALL 42000 samples. They can be clearly eliminated.
 summary(digit.dat)
-d.ink = c(1:42000)
-for(i in 1:42000){
-  d.ink[i] = sum(digit.dat[i,-1])
-}
-digit.dat = cbind(digit.dat, d.ink)
-ink_stats = c(0:19)
-for(i in 0:9){
-  ink_stats[i+1] = mean(digit.dat[digit.dat$label == i, 786])
-  ink_stats[i+11] = sd(digit.dat[digit.dat$label == i, 786])
-}
-ink_stats = matrix(ink_stats, nrow = 2, ncol = 10, byrow = TRUE)
+
+inkDensity <- apply(digit.dat[,-1],1,sum)
+inkMeanStats <- tapply(inkDensity,digit.dat$label,mean)
+inkSdStats <- tapply(inkDensity,digit.dat$label,sd)
+
+#Multinomial Logit
+library(nnet)
+train.index <- c(1:1000)
+
+#initialise training and testData
+#training set
+digit.train <- digit.dat[train.index,]
+digit.train$label = as.factor(digit.train$label)
+
+#test set
+digit.test <- digit.dat[-train.index,]
+digit.test$label = as.factor(digit.test$label)
+
+# fit multinomial logistic regression model
+digit.multinom <- multinom(label ~ ., data = digit.train, maxit = 4000000, MaxNWts = 100000000000000)
+
+# predict class label on training data
+digit.multinom.pred <- predict(digit.multinom, digit.train[,-1],type="class")
+# make confusion matrix: true label vs. predicted label
+table(digit.train$label,digit.multinom.pred)
+
+# predict class label on test data
+digit.multinom.test.pred <- predict(digit.multinom, digit.test[,-1],type="class")
+table(digit.test$label,digit.multinom.test.pred)
+
+# make confusion matrix for predictions on test data
+confmat <- table(digit.test$label,digit.multinom.test.pred)
+
+# use it to compute accuracy on test data
+sum(diag(confmat))/sum(confmat)
+
 
 #[,1]      [,2]      [,3]      [,4]      [,5]      [,6]      [,7]      [,8]      [,9]     [,10]
 #[1,] 34632.408 15188.466 29871.099 28320.188 24232.722 25835.920 27734.917 22931.244 30184.148 24553.750
