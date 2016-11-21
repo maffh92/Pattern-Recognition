@@ -16,9 +16,10 @@ names(ScaledinkSdStats) <- 0:9
 #combine features
 #assign to each label to correct ink feature
 inkFeature <- 1:nrow(digit.dat)
-for(i in 1:nrow(digit.train)){
-  inkFeature[i] <- ScaledinkSdStats[digit.train[i,]$label]
+for(i in 1:nrow(digit.dat)){
+  inkFeature[i] <- ScaledinkSdStats[digit.dat[i,]$label]
 }
+
 
 #combine the digit with the ink feature
 digit.ink <- cbind(digit.dat,inkFeature)
@@ -38,7 +39,7 @@ digit.test <- digit.ink[-train.index,]
 digit.test$label = as.factor(digit.test$label)
 
 # fit multinomial logistic regression model
-digit.multinom <- multinom(label ~ ., data = digit.train, maxit = 4000000, MaxNWts = 100000000000000)
+digit.multinom <- multinom(label ~ ., data = digit.train, maxit = 1000, MaxNWts = 100000000000000)
 
 # predict class label on training data
 digit.multinom.pred <- predict(digit.multinom, digit.train[,-1],type="class")
