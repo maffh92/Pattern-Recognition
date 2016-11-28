@@ -18,6 +18,18 @@ horizontal_line <- function (b, data){
   line
 } # to use the function, type digit.dat = cbind(digit.dat, horizontal_line(b, digit$dat)
 
+vertical_line <- function (a, data){
+  line = 1:42000
+  for(i in 1:42000){
+    sumv = 0;
+    for(j in 1:28){
+      sumv = sumv + data[i, a + 28*j];
+    }
+    line[i] = sumv;
+  }
+  line
+} # to use the function, type digit.dat = cbind(digit.dat, vertical_line(a, digit$dat)
+
 #checking stats. the result shows that a lot of pixels remain white for ALL 42000 samples. They can be clearly eliminated.
 summary(digit.dat)
 
