@@ -10,9 +10,13 @@
 
 # It probably really makes sense to reduce the amount of data by quantizing.
 
-
-
-
+horizontal_line <- function (b, data){
+  line = 1:42000
+  for(i in 1:42000){
+    line[i] = sum(data[i, ((b-1)*28+2) : ((b-1)*28 + 29)]);
+  }
+  line
+} # to use the function, type digit.dat = cbind(digit.dat, horizontal_line(b, digit$dat)
 
 #checking stats. the result shows that a lot of pixels remain white for ALL 42000 samples. They can be clearly eliminated.
 summary(digit.dat)
