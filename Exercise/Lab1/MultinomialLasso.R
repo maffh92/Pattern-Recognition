@@ -2,15 +2,17 @@
 library(glmnet)
 
 #training set
-digit.train <- digit.ink[train.index,]
+digit.train <- digit.all.features[train.index,]
 digit.train$label = as.factor(digit.train$label)
 
 #test set
-digit.test <- digit.ink[-train.index,colnames(digit.train)]
+digit.test <- digit.all.features[-train.index,colnames(digit.train)]
 digit.test$label = as.factor(digit.test$label)
 
+set.seed(123456)
 digit.lasso.cv <- cv.glmnet(as.matrix(digit.train[,-1]), digit.train$label,family="multinomial", type.measure="class")
 plot(digit.lasso.cv)
+
 
 # predict class label on test set using the best cv model
 digit.lasso.cv.pred <- predict(digit.lasso.cv, as.matrix(digit.test[,-1]),type="class")
@@ -32,4 +34,4 @@ digit.lasso.cv.confmat
 # 9    0    0   34   56  285   26    3  317    4 3366
 # compute the accuracy on the test set
 sum(diag(digit.lasso.cv.confmat))/sum(digit.lasso.cv.confmat)
-#0.8805366
+#0.8872927

@@ -6,3 +6,5 @@ digit.dat$label = as.factor(digit.dat$label)
 
 #remove all zero colls
 digit.dat <- digit.dat[, colSums(digit.dat != 0) > 0]
+
+

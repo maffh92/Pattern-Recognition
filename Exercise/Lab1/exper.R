@@ -10,11 +10,36 @@
 
 # It probably really makes sense to reduce the amount of data by quantizing.
 
-horizontal_line <- function (b, data){
-  line = 1:42000
-  for(i in 1:42000){
-    line[i] = sum(data[i, ((b-1)*28+2) : ((b-1)*28 + 29)]);
+b <- c(8,12,16,20)
+for(i in b){
+  h <- i
+}
+
+horizontalLines <- c(8,12,14,16,20)
+verticalLines <- c(10,12,14,16,20)
+
+horizontalFeatures <- generalLineFeatures(horizontalLines,digit.dat,horizontalFrame)
+verticalFeatures <- generalLineFeatures(verticalLines,digit.dat,verticalFrame)
+
+horizontalFrame <- data.frame("horizontal-8"=1:42000,"horizontal-12"=1:42000,"horizontal-14"=1:42000,"horizontal-16"=1:42000,"horizontal-20"=1:42000)
+verticalFrame <- data.frame("vertical-10"=1:42000,"horizontal-12"=1:42000,"horizontal-14"=1:42000,"horizontal-16"=1:42000,"horizontal-20"=1:42000)
+
+generalLineFeatures <- function(lines,data,featureFrame){
+  i <- 0
+  for(elem in lines){
+    i <- i + 1
+    featureFrame[,i] <- horizontal_line(elem,data)
   }
+  return(featureFrame)
+}
+
+
+
+horizontal_line <- function (b,data){
+  line = 1:42000
+    for(i in 1:42000){
+      line[i] = sum(data[i, ((b-1)*28+2) : ((b-1)*28 + 29)]);
+    }
   line
 } # to use the function, type digit.dat = cbind(digit.dat, horizontal_line(b, digit$dat)
 
@@ -22,13 +47,16 @@ vertical_line <- function (a, data){
   line = 1:42000
   for(i in 1:42000){
     sumv = 0;
-    for(j in 1:28){
-      sumv = sumv + data[i, a + 28*j];
+    for(j in 0:27){
+      sumv = sumv + data[i, a + 28*j + 1];
     }
     line[i] = sumv;
   }
   line
 } # to use the function, type digit.dat = cbind(digit.dat, vertical_line(a, digit$dat)
+
+vecticalFeature <- vertical_line(8,digit.dat)
+horizontalFeature <- horizontal_line(8,digit.dat)
 
 #checking stats. the result shows that a lot of pixels remain white for ALL 42000 samples. They can be clearly eliminated.
 summary(digit.dat)

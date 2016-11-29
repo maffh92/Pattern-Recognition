@@ -1,11 +1,13 @@
 #k-nearest neigbhours
 library(class)
 #training set
-digit.train <- digit.ink[train.index,]
+
+#training set
+digit.train <- digit.all.features[train.index,]
 digit.train$label = as.factor(digit.train$label)
 
 #test set
-digit.test <- digit.ink[-train.index,colnames(digit.train)]
+digit.test <- digit.all.features[-train.index,colnames(digit.train)]
 digit.test$label = as.factor(digit.test$label)
 
 #run 10 fold  and determine the k with the best accuracy
@@ -14,7 +16,7 @@ neighboursInformation <- run.analyse(digit.dat[train.index,],10)
 #one neighbor <- still need to use cross validation on this method.
 set.seed(123456)
 knn.pred <- knn(digit.train[,-1],digit.test[,-1],digit.train$label, k = 1)
-confmat <- table( digit.test$label, knn.pred)
+knn.table <- table( digit.test$label, knn.pred)
 # use it to compute accuracy on test data
 sum(diag(confmat))/sum(confmat)
 
@@ -72,6 +74,7 @@ ten.fold.split <- function(data,k){ # returns total error for 10-fold validation
     #split the training set and testset
     trainingSet <- data[listToVectorExcept(equalDividedGroups,i),]
     testSet <- data[equalDividedGroups[[i]],]
+    set.seed(123456)
     knn.pred <- knn(trainingSet[,-1],testSet[,-1],trainingSet[,1], k = k)
     confmat <- confmat + table(testSet[,1], knn.pred)
     # use it to compute accuracy on test data
