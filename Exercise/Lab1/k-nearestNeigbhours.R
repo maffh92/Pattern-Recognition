@@ -10,15 +10,24 @@ digit.train$label = as.factor(digit.train$label)
 digit.test <- digit.all.features[-train.index,colnames(digit.train)]
 digit.test$label = as.factor(digit.test$label)
 
-#run 10 fold  and determine the k with the best accuracy
-neighboursInformation <- run.analyse(digit.dat[train.index,],10)
+#training set
+digit.train <- digit.noise.removed.train
+digit.train$label = as.factor(digit.noise.removed.train$label)
 
+#test set
+digit.test <- digit.noise.removed.test
+digit.test$label = as.factor(digit.test$label)
+
+
+#run 10 fold  and determine the k with the best accuracy
+neighboursInformation <- run.analyse(digit.train,10)
+neighboursInformation[max(neighboursInformation$accuracy) == neighboursInformation$accuracy,]
 #one neighbor <- still need to use cross validation on this method.
 set.seed(123456)
 knn.pred <- knn(digit.train[,-1],digit.test[,-1],digit.train$label, k = 1)
 knn.table <- table( digit.test$label, knn.pred)
 # use it to compute accuracy on test data
-sum(diag(confmat))/sum(confmat)
+sum(diag(knn.table))/sum(knn.table)
 
 #one neighbor results:
 # confmat <- table( digit.test$label, knn.pred)

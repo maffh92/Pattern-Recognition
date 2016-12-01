@@ -49,13 +49,14 @@ colnames(digit.noise.removed.test) <- colnames(digit.noise.removed.train)
 ###lines features
 ###############
 
-scaledHorizontalFeatures <- scale(horizontalFeatures)
-scaledVerticalFeatures <- scale(verticalFeatures)
+
 horizontalLines <- c(8,12,14,16,20)
 verticalLines <- c(10,12,14,16,20)
 
 horizontalFeatures <- generalLineFeatures(horizontalLines,digit.dat,horizontalFrame)
 verticalFeatures <- generalLineFeatures(verticalLines,digit.dat,verticalFrame)
+scaledHorizontalFeatures <- scale(horizontalFeatures)
+scaledVerticalFeatures <- scale(verticalFeatures)
 
 horizontalFrame <- data.frame("horizontal-8"=1:42000,"horizontal-12"=1:42000,"horizontal-14"=1:42000,"horizontal-16"=1:42000,"horizontal-20"=1:42000)
 verticalFrame <- data.frame("vertical-10"=1:42000,"horizontal-12"=1:42000,"horizontal-14"=1:42000,"horizontal-16"=1:42000,"horizontal-20"=1:42000)

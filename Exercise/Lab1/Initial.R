@@ -1,3 +1,4 @@
+set.seed(123456)
 train.index <- sample(c(1:nrow(digit.dat)),1000)
 
 #loading the data

@@ -1,20 +1,23 @@
 #Multinomial Logit
 library(nnet)
-digit.ink <- cbind(digit.dat,inkFeature)
+digit.ink <- cbind(digit.dat[,1],inkFeature)
 digit.ink.horizontal <- cbind(digit.ink,horizontalFeature)
+
+colnames(digit.ink)[1] <- "label"
+
 #training set
-digit.train <- digit.ink[train.index,]
+digit.train <- as.data.frame(digit.ink[train.index,])
 digit.train$label = as.factor(digit.train$label)
 
 #test set
-digit.test <- digit.ink[-train.index,colnames(digit.train)]
+digit.test <- as.data.frame(digit.ink[-train.index,colnames(digit.train)])
 digit.test$label = as.factor(digit.test$label)
 
 
 #initialise training and testData
 # fit multinomial logistic regression model
 set.seed(123456)
-digit.multinom <- multinom(label ~ ., data = digit.train, maxit = 100000, MaxNWts = 100000000000000)
+digit.multinom <- multinom(label ~ ., data = scale(digit.train), maxit = 10000000, MaxNWts = 100000000000000)
 
 # predict class label on training data
 digit.multinom.pred <- predict(digit.multinom, digit.test[,-1],type="class")

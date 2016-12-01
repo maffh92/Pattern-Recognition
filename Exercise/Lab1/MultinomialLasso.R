@@ -20,18 +20,17 @@ digit.lasso.cv.pred <- predict(digit.lasso.cv, as.matrix(digit.test[,-1]),type="
 # make the confusion matrix
 digit.lasso.cv.confmat <- table(digit.test$label,digit.lasso.cv.pred)
 digit.lasso.cv.confmat
-# digit.lasso.cv.pred
-# 0    1    2    3    4    5    6    7    8    9
-# 0 3934    0   10    2    0   34   15    0   30    0
-# 1    0 4588    0    0    0    0    0    0    0    0
-# 2   29    0 3596  135   29   25  104   19   93   23
-# 3    5    0  204 3390    1  285   80   61  188   47
-# 4    0    0   19    9 3520   54   18   40    4  306
-# 5   34    0   94  160   39 3010  125   32  142   70
-# 6   31    0  135    4   29  204 3572    0   65    0
-# 7    0    0   79   20  136    4    1 3772    0  284
-# 8   25    0  115  159    2  237   37    7 3354   34
-# 9    0    0   34   56  285   26    3  317    4 3366
+0    1    2    3    4    5    6    7    8    9
+0 3970    0    0    5    0   22   12    0   29    0
+1    0 4587    1    0    0    0    0    1    0    0
+2   18    0 3445  135   44   81  156   32  164    9
+3    5    0  104 3644    5  230   64   31  128   28
+4    0    0    7    5 3448   14    9   33    3  452
+5   23    0   64  290   30 2926  122   12  168   70
+6   16    0   66   18   49   89 3710    1   91    0
+7    0    0   21   22  133    3    1 3785    0  319
+8   17    0   57  295    5  154   36    3 3385   22
+9    0    0    8   77  188   17    1  311    1 3473
 # compute the accuracy on the test set
 sum(diag(digit.lasso.cv.confmat))/sum(digit.lasso.cv.confmat)
-#0.8872927
+ 
