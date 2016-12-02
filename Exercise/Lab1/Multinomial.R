@@ -13,7 +13,7 @@ digit.train$label = as.factor(digit.train$label)
 digit.test <- as.data.frame(digit.ink[-train.index,colnames(digit.train)])
 digit.test$label = as.factor(digit.test$label)
 
-
+# all pixel features + ink feature (all scaled)
 #initialise training and testData
 # fit multinomial logistic regression model
 set.seed(123456)
@@ -44,7 +44,7 @@ digit.train.horizontal$label = as.factor(digit.train.horizontal$label)
 digit.test.horizontal <- digit.ink.horizontal[-train.index,colnames(digit.train.horizontal)]
 digit.test.horizontal$label = as.factor(digit.test.horizontal$label)
 
-
+# all pixel feaatures + ink_density + hor.line @ 8 (not scaled)
 # predict class label on training data
 set.seed(123456)
 digit.multinom.horizontal <- multinom(label ~ ., data = digit.train.horizontal, maxit = 100000, MaxNWts = 100000000000000)
