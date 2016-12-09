@@ -1,65 +1,65 @@
-#combine all the features
-digit.all.features <- cbind(digit.dat,inkFeature,scaledHorizontalFeatures,scaledVerticalFeatures)
-
-#All the features
+#All (?) the features
 inkDensity <- apply(digit.dat[,-1],1,sum)
 inkMeanStats <- tapply(inkDensity,digit.dat$label,mean)
 inkSdStats <- tapply(inkDensity,digit.dat$label,sd)
 
-#scale features
-ScaledinkSdStats <- scale(inkSdStats)
-names(ScaledinkSdStats) <- 0:9
-digit.ink <- cbind(digit.dat,inkFeature)
+inkDensityMean <- apply(digit.dat[,-1],1,mean)
 
-#combine features
+
+#scale features (ink feature)
+ScaledinkSdStats <- scale(inkSdStats) # how that works?
+names(ScaledinkSdStats) <- 0:9
+
+
+#combine features (compute new ink feature: scaled SD)
 #assign to each label to correct ink feature
+# TAKES TIME
 inkFeature <- 1:nrow(digit.dat)
 for(i in 1:nrow(digit.dat)){
   inkFeature[i] <- ScaledinkSdStats[digit.dat[i,]$label]
 }
 
+inkFeature = scale(inkDensityMean)
+# digit.ink <- cbind(digit.dat,inkFeature)
+digit.ink <- as.data.frame(cbind(digit.dat$label,inkFeature))
 
-#Change all values to either 0 or 1. This could potentially remove noise
-tmp.without.label <- digit.dat[,-1]
-tmp.without.label[tmp.without.label<150] <- 0
-tmp.without.label[tmp.without.label>=150] <- 1
 
+#combine all the features
+digit.all.features <- cbind(digit.dat,inkFeature,scaledHorizontalFeatures,scaledVerticalFeatures)
 
 #remove all the columns below some fixed size of zero values
-threshold <- 100
-x <- digit.dat[train.index,-1]
+# threshold <- 100
+# x <- digit.dat[train.index,-1]
+# tmp <- apply(x,2,function(a){if(length(a[a!=0]) > threshold) a}) # what is this?
+#if(class(tmp) == "list"){
+#  print("remove all null cases from the list")
+#  tmp <- tmp[!sapply(tmp, is.null)]
+#}
+#tmp <- as.data.frame(tmp)
 
-tmp <- apply(x,2,function(a){if(length(a[a!=0]) > threshold) a})
-if(class(tmp) == "list"){
-  print("remove all null cases from the list")
-  tmp <- tmp[!sapply(tmp, is.null)]
-}
-tmp <- as.data.frame(tmp)
-
-
-digit.noise.removed.train <- cbind(digit.dat[train.index,1],tmp,inkFeature[train.index],verticalFeatures[train.index,],horizontalFeatures[train.index,])
-digit.noise.removed.test <- cbind(digit.dat[-train.index,1],digit.dat[-train.index,colnames(tmp)],inkFeature[-train.index],verticalFeatures[-train.index,],horizontalFeatures[-train.index,])
+#digit.noise.removed.train <- cbind(digit.dat[train.index,1],tmp,inkFeature[train.index],verticalFeatures[train.index,],horizontalFeatures[train.index,])
+#digit.noise.removed.test <- cbind(digit.dat[-train.index,1],digit.dat[-train.index,colnames(tmp)],inkFeature[-train.index],verticalFeatures[-train.index,],horizontalFeatures[-train.index,])
 
 
-colnames(digit.noise.removed.train)[1] <- "label"
-colnames(digit.noise.removed.test) <- colnames(digit.noise.removed.train)
+#colnames(digit.noise.removed.train)[1] <- "label"
+#colnames(digit.noise.removed.test) <- colnames(digit.noise.removed.train)
 
 
 ###############
-###lines features
+###line features
 ###############
 
 
 horizontalLines <- c(8,12,14,16,20)
 verticalLines <- c(10,12,14,16,20)
 
+horizontalFrame <- data.frame("horizontal-8"=1:42000,"horizontal-12"=1:42000,"horizontal-14"=1:42000,"horizontal-16"=1:42000,"horizontal-20"=1:42000)
+verticalFrame <- data.frame("vertical-10"=1:42000,"horizontal-12"=1:42000,"horizontal-14"=1:42000,"horizontal-16"=1:42000,"horizontal-20"=1:42000)
+
 horizontalFeatures <- generalLineFeatures(horizontalLines,digit.dat,horizontalFrame)
 verticalFeatures <- generalLineFeatures(verticalLines,digit.dat,verticalFrame)
 scaledHorizontalFeatures <- scale(horizontalFeatures)
 scaledVerticalFeatures <- scale(verticalFeatures)
-
-horizontalFrame <- data.frame("horizontal-8"=1:42000,"horizontal-12"=1:42000,"horizontal-14"=1:42000,"horizontal-16"=1:42000,"horizontal-20"=1:42000)
-verticalFrame <- data.frame("vertical-10"=1:42000,"horizontal-12"=1:42000,"horizontal-14"=1:42000,"horizontal-16"=1:42000,"horizontal-20"=1:42000)
 
 generalLineFeatures <- function(lines,data,featureFrame){
   i <- 0
@@ -69,8 +69,6 @@ generalLineFeatures <- function(lines,data,featureFrame){
   }
   return(featureFrame)
 }
-
-
 
 horizontal_line <- function (b,data){
   line = 1:42000
