@@ -32,11 +32,21 @@ digit.ink <- as.data.frame(cbind(digit.dat$label,inkFeature))
 ###############
 
 
-horizontalLines <- c(8,12,14,16,20)
-verticalLines <- c(10,12,14,16,20)
+horizontalLines <- c(3:26) # c(8,12,14,16,20)
+verticalLines <- c(3:26) # c(10,12,14,16,20)
 
-horizontalFrame <- data.frame("horizontal-8"=1:42000,"horizontal-12"=1:42000,"horizontal-14"=1:42000,"horizontal-16"=1:42000,"horizontal-20"=1:42000)
-verticalFrame <- data.frame("vertical-10"=1:42000,"vertical-12"=1:42000,"vertical-14"=1:42000,"vertical-16"=1:42000,"vertical-20"=1:42000)
+horizontalFrame <- data.frame("horizontal-3"=1:42000,"horizontal-4"=1:42000,"horizontal-5"=1:42000,"horizontal-6"=1:42000,"horizontal-7"=1:42000,
+                              "horizontal-8"=1:42000,"horizontal-9"=1:42000,"horizontal-10"=1:42000,"horizontal-11"=1:42000,
+                              "horizontal-12"=1:42000,"horizontal-13"=1:42000,"horizontal-14"=1:42000,"horizontal-15"=1:42000,
+                              "horizontal-16"=1:42000,"horizontal-17"=1:42000,"horizontal-18"=1:42000,"horizontal-19"=1:42000,
+                              "horizontal-20"=1:42000, "horizontal-21"=1:42000,"horizontal-22"=1:42000,"horizontal-23"=1:42000,
+                              "horizontal-24"=1:42000,"horizontal-25"=1:42000,"horizontal-26"=1:42000)
+verticalFrame <- data.frame("vertical-3"=1:42000,"vertical-4"=1:42000,"vertical-5"=1:42000,"vertical-6"=1:42000,"vertical-7"=1:42000,
+                            "vertical-8"=1:42000,"vertical-9"=1:42000,"vertical-10"=1:42000,"vertical-11"=1:42000,
+                            "vertical-12"=1:42000,"vertical-13"=1:42000,"vertical-14"=1:42000,"vertical-15"=1:42000,
+                            "vertical-16"=1:42000,"vertical-17"=1:42000,"vertical-18"=1:42000,"vertical-19"=1:42000,
+                            "vertical-20"=1:42000, "vertical-21"=1:42000,"vertical-22"=1:42000,"vertical-23"=1:42000,
+                            "vertical-24"=1:42000,"vertical-25"=1:42000,"vertical-26"=1:42000)
 
 # TAKES TIME
 horizontalFeatures <- generalLineFeatures(horizontalLines,digit.dat,horizontalFrame)
@@ -63,45 +73,12 @@ digit.all.features = as.data.frame(cbind(digit.dat$label, inkFeature, scaledHori
 colnames(digit.all.features)[1] <- "label"
 colnames(digit.all.features)[2] <- "inkFeature"
 
-#######################################################
-# line feature stats:
-# > h8MeanStats
-# 0           1           2           3           4           5           6           7           8           9 
-# 0.72785863 -0.81598241  0.20224507  0.47862695 -0.58172859  0.38962264 -0.74985953 -0.13593079  0.54338027  0.06449222 
-# > h12MeanStats
-# 0           1           2           3           4           5           6           7           8           9 
-# 0.72839992 -0.72644183 -0.68353264 -0.07657331  0.16561755 -0.20099501 -0.30899468  0.37983170  0.47223190  0.32415621 
-# > h14MeanStats
-# 0           1           2           3           4           5           6           7           8           9 
-# 0.21488928 -0.88135051 -0.67994264  0.30057793  0.46811025  0.06547935  0.46765014 -0.58862839  0.30675524  0.48412807 
-# > h16MeanStats
-# 0           1           2           3           4           5           6           7           8           9 
-# 0.03932602 -0.85655591  0.03553227 -0.27673997  1.15893522 -0.36016381  0.70643752 -0.64258783 -0.06175186  0.40814764 
-# > h20MeanStats
-# 0           1           2           3           4           5           6           7           8           9 
-# 0.74798181 -0.60320178  1.27166761 -0.20580518 -0.62766150 -0.20758612  1.01221323 -0.59612239 -0.02290225 -0.67069573 
-# > v10MeanStats
-# 0           1           2           3           4           5           6           7           8           9 
-# 0.73667003 -0.75065102 -0.39290543 -0.35177719 -0.19777363 -0.05596683 -0.71694733  1.32572200  0.18684360  0.24688842 
-# > v12MeanStats
-# 0           1           2           3           4           5           6           7           8           9 
-# 0.72839992 -0.72644183 -0.68353264 -0.07657331  0.16561755 -0.20099501 -0.30899468  0.37983170  0.47223190  0.32415621 
-# > v14MeanStats
-# 0           1           2           3           4           5           6           7           8           9 
-# 0.21488928 -0.88135051 -0.67994264  0.30057793  0.46811025  0.06547935  0.46765014 -0.58862839  0.30675524  0.48412807 
-# > v16MeanStats
-# 0           1           2           3           4           5           6           7           8           9 
-# 0.03932602 -0.85655591  0.03553227 -0.27673997  1.15893522 -0.36016381  0.70643752 -0.64258783 -0.06175186  0.40814764 
-# > v20MeanStats
-# 0           1           2           3           4           5           6           7           8           9 
-# 0.74798181 -0.60320178  1.27166761 -0.20580518 -0.62766150 -0.20758612  1.01221323 -0.59612239 -0.02290225 -0.67069573
-####################################################
-
 generalLineFeatures <- function(lines,data,featureFrame){
   i <- 0
   for(elem in lines){
     i <- i + 1
-    featureFrame[,i] <- horizontal_line(elem,data)
+    featureFrame[,i] <- vertical_line(elem,data)
+    print(i)
   }
   return(featureFrame)
 }

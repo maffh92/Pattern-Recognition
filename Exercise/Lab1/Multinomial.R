@@ -63,3 +63,18 @@ multimodal.confmat.all.features <- table(digit.test.all.features$label,digit.mul
 
 # use it to compute accuracy on test data
 sum(diag(multimodal.confmat.all.features))/sum(multimodal.confmat.all.features)
+
+############## REsults: #########
+# 1    2    3    4    5    6    7    8    9   10
+# 1  3099  120  148   18   46  364   65   76   91   20
+# 2    45 4056   40   46   37  141   29  102   77    8
+# 3   126  106 2680  280   99  314  260   60   56   84
+# 4    91  157  162 2785   28  447   44  187  157  179
+# 5   121  165   62   30 2845   81  101   29  104  434
+# 6   183   82  294  464  133 1726  149  197  335  133
+# 7    59   86  375   21   32   66 3341    1   35   12
+# 8    19   66   18   72   57  263    4 3251   85  461
+# 9   170  261   84  263  110  483  101  188 2211  110
+# 10   17   34    5   73  578  199    3  256  130 2802
+# 
+# [1] 0.7023415
