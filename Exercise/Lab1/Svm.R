@@ -14,38 +14,40 @@ digit.svn.test$label = as.factor(digit.svn.test$label)
 
 # Svm with cost complexity between 1 and 10
 set.seed(123456)
-digit.tune.svm <- tune.svm(digit.svn.train[, -1],digit.svn.train$label, cost=1:10)
+digit.tune.svm <- tune.svm(digit.train[, -1],digit.train$label, cost=1:10)
 
+# digit.tune.svm$performances
 # cost error dispersion
-# 1     1 0.083 0.02983287
-# 2     2 0.081 0.02923088
-# 3     3 0.081 0.02806738
-# 4     4 0.080 0.02867442
-# 5     5 0.080 0.02867442
-# 6     6 0.080 0.02867442
-# 7     7 0.080 0.02867442
-# 8     8 0.080 0.02867442
-# 9     9 0.080 0.02867442
-# 10   10 0.080 0.02867442
+# 1     1 0.089 0.02766867
+# 2     2 0.084 0.03134042
+# 3     3 0.084 0.03204164
+# 4     4 0.084 0.03204164
+# 5     5 0.084 0.03204164
+# 6     6 0.084 0.03204164
+# 7     7 0.084 0.03204164
+# 8     8 0.084 0.03204164
+# 9     9 0.084 0.03204164
+# 10   10 0.084 0.03204164
 
 # Cost=1
-digit.svm <- svm(digit.svn.train[, -1],digit.svn.train$label,cost=4)
+digit.svm <- svm(digit.train[, -1],digit.train$label,cost=3)
 
 # make predictions on test set
-svm.pred <- predict(digit.svm, digit.svn.test[,-1])
+svm.pred <- predict(digit.svm, digit.test[,-1])
 
-svm.pred.table <- table(digit.svn.test$label,svm.pred)
-svm.pred
-#      0    1    2    3    4    5    6    7    8    9
-# 0 3879    0    7   23    6   30   59    3   28    3
-# 1    0 4509   13   10   12   16    7   10    4    8
-# 2   43   10 3710   49   79   14   46   56   69    8
-# 3   18   17   69 3867   10  102   17   38   75   26
-# 4    5    7   11    2 3694    1   20   26    3  202
-# 5   40   11    9  221   36 3229   44    9   64   42
-# 6   40   10    7    5   33   59 3862    0   24    0
-# 7    9   22   28    4   52    1    3 4038    5  122
-# 8   32   35   15  180   35   93   22   17 3513   32
-# 9   33    9    4   70  131   10   10  136   19 3654
-sum(diag(svm.pred.table))/nrow(digit.svn.test)
-# 0.9257317
+svm.pred.table <- table(digit.test$label,svm.pred)
+# svm.pred.table 
+# 0    1    2    3    4    5    6    7    8    9
+# 0 3848    0   19    2    7   82   57    2   28    2
+# 1    0 4501   38    2    6   11    7    6    8    2
+# 2   23   13 3729   44   51   13   58   72   53    9
+# 3   10   50  105 3659    3  229   29   53   62   37
+# 4    4   25   34    0 3774    2   30    5    3   95
+# 5   13    7   22   63   33 3425   66   10   23   34
+# 6   23    6   13    0   14   44 3920    0    7    1
+# 7    8   44   44    7   81   14    2 3969    6  121
+# 8   16   74   61  116   40  130   33   28 3393   90
+# 9   23   25    4   37  214   24    2   94   21 3653
+
+sum(diag(svm.pred.table))/sum(svm.pred.table)
+# [1] 0.9236829

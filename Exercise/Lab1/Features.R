@@ -70,6 +70,8 @@ v20MeanStats = tapply(digit.all.features$vertical.20,digit.dat$label,mean)
 
 #combine all the new features
 digit.all.features = as.data.frame(cbind(digit.dat$label, inkFeature, scaledHorizontalFeatures, scaledVerticalFeatures))
+digit.all.features.rawPixel = as.data.frame(cbind(digit.dat, inkFeature, scaledHorizontalFeatures, scaledVerticalFeatures))
+
 colnames(digit.all.features)[1] <- "label"
 colnames(digit.all.features)[2] <- "inkFeature"
 
@@ -102,3 +104,27 @@ vertical_line <- function (a, data){
   }
   line
 } # to use the function, type digit.dat = cbind(digit.dat, vertical_line(a, digit$dat)
+
+
+##################################################
+set.seed(123456)
+# load the library
+library(mlbench)
+library(caret)
+library(e1071)
+library(randomForest)
+# load the data
+data(PimaIndiansDiabetes)
+# define the control using a random forest selection function
+control <- rfeControl(functions=rfFuncs, method="cv", number=10)
+# run the RFE algorithm
+results <- rfe(digit.train[,-1], digit.train$label, sizes=c(10,350), rfeControl=control)
+# summarize the results
+print(results)
+# list the chosen features
+predictors(results)
+# plot the results
+plot(results, type=c("g", "o"))
+
+
+subset.selection.varnames <- predictors(results)[1:350]

@@ -20,7 +20,7 @@ digit.test$label = as.factor(digit.test$label)
 
 
 #run 10 fold  and determine the k with the best accuracy
-neighboursInformation <- run.analyse(digit.train,10)
+neighboursInformation <- run.analyse(digit.train,100)
 neighboursInformation[max(neighboursInformation$accuracy) == neighboursInformation$accuracy,]
 #one neighbor <- still need to use cross validation on this method.
 set.seed(123456)
@@ -33,19 +33,20 @@ sum(diag(knn.table))/sum(knn.table)
 # confmat <- table( digit.test$label, knn.pred)
 # confmat
 # knn.pred
+# knn.pred
 # 0    1    2    3    4    5    6    7    8    9
-# 0 3928    3   13    6    2   18   37    2    7    9
-# 1    0 4547   11   10    4    0    5    6    1    4
-# 2   81  150 3502   73   26    9   23  115   51   23
-# 3   19   62   85 3583    9  245   24   60   93   81
-# 4    4  128    9    1 3189    0   50   78    8  503
-# 5   52   35    3  130   17 3175   73   13  113   95
-# 6   73   28    6    0   21   30 3858    5   14    5
-# 7    6  120   42    9   46    6    1 3869    1  196
-# 8   41  152   37  194   43  184   48   33 3100  138
-# 9   17   42   22   30  315   33    3  238   16 3375
+# 0 3876    5    9    3    4   49   64   13    4   20
+# 1    0 4550   10    2    3    0    6    7    2    1
+# 2   47  108 3479   64   21   23   52  170   39   62
+# 3   16   64   56 3688    5  224   18   76   41   49
+# 4    3   81   11    0 3323    2   65   65    0  422
+# 5   16   35    8  147   33 3191   96   34   25  111
+# 6   37   17    6    0    6   51 3902    6    2    1
+# 7    1  128   19   10   56    3    2 3991    3   83
+# 8   23  169   50  289   45  224   50   46 2907  178
+# 9   22   43    4   43  248   30   10  241    7 3449
 # > sum(diag(confmat))/sum(confmat)
-# [1] 0.881122
+# [1]  0.8867317
 
 
 
