@@ -24,30 +24,23 @@ neighboursInformation <- run.analyse(digit.train,100)
 neighboursInformation[max(neighboursInformation$accuracy) == neighboursInformation$accuracy,]
 #one neighbor <- still need to use cross validation on this method.
 set.seed(123456)
-knn.pred <- knn(digit.train[,-1],digit.test[,-1],digit.train$label, k = 1)
+knn.pred <- knn(digit.train[,-1],digit.test[,-1],digit.train$label, k = 3)
 knn.table <- table( digit.test$label, knn.pred)
-# use it to compute accuracy on test data
-sum(diag(knn.table))/sum(knn.table)
-
-#one neighbor results:
-# confmat <- table( digit.test$label, knn.pred)
-# confmat
-# knn.pred
 # knn.pred
 # 0    1    2    3    4    5    6    7    8    9
-# 0 3876    5    9    3    4   49   64   13    4   20
-# 1    0 4550   10    2    3    0    6    7    2    1
-# 2   47  108 3479   64   21   23   52  170   39   62
-# 3   16   64   56 3688    5  224   18   76   41   49
-# 4    3   81   11    0 3323    2   65   65    0  422
-# 5   16   35    8  147   33 3191   96   34   25  111
-# 6   37   17    6    0    6   51 3902    6    2    1
-# 7    1  128   19   10   56    3    2 3991    3   83
-# 8   23  169   50  289   45  224   50   46 2907  178
-# 9   22   43    4   43  248   30   10  241    7 3449
-# > sum(diag(confmat))/sum(confmat)
-# [1]  0.8867317
-
+# 0 3865    4    9    3    6   47   72   17    6   18
+# 1    0 4547   12    4    3    0    4    5    1    5
+# 2   43  156 3424   52   32   22   52  188   41   55
+# 3   14   95   48 3688    4  185   24   80   41   58
+# 4    3   99    7    2 3331    4   68   52    0  406
+# 5   18   46    6  150   39 3185   91   41   14  106
+# 6   43   24    2    1   11   48 3888    8    0    3
+# 7    3  185   22    3   51    3    2 3942    0   85
+# 8   33  217   39  298   46  192   56   68 2863  169
+# 9   19   55    2   46  179   26   13  265    9 3483
+# use it to compute accuracy on test data
+sum(diag(knn.table))/sum(knn.table)
+# [1] 0.8833171
 
 
 #run.analyse is used as the main function to run the analyse
