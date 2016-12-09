@@ -38,39 +38,28 @@ sum(diag(multimodal.confmat))/sum(multimodal.confmat)
 #10  236  682  469  867  117    0  157 1569    0    0
 # 0.2242683
 
-#########################################
-# predict class label on test data
-digit.multinom.single.test.pred <- predict(digit.multinom, digit.test[,-1],type="class")
-table(digit.test$label,digit.multinom.single.test.pred)
-
-# make confusion matrix for predictions on test data
-multimodal.confmat.single <- table(digit.test$label,digit.multinom.single.test.pred)
-
-# use it to compute accuracy on test data
-sum(diag(multimodal.confmat.single))/sum(multimodal.confmat.single)
-
 ######################################
 
 #2 features
 #training set
-digit.train.horizontal <- digit.ink.horizontal[train.index,]
-digit.train.horizontal$label = as.factor(digit.train.horizontal$label)
+digit.train.all.features <- digit.all.features[train.index,]
+digit.train.all.features$label = as.factor(digit.train.all.features$label)
 
 #test set
-digit.test.horizontal <- digit.ink.horizontal[-train.index,colnames(digit.train.horizontal)]
-digit.test.horizontal$label = as.factor(digit.test.horizontal$label)
+digit.test.all.features <- digit.all.features[-train.index,colnames(digit.train.all.features)]
+digit.test.all.features$label = as.factor(digit.test.all.features$label)
 
-# all pixel feaatures + ink_density + hor.line @ 8 (not scaled)
+# ink_density + all line features (scaled)
 # predict class label on training data
 set.seed(123456)
-digit.multinom.horizontal <- multinom(label ~ ., data = digit.train.horizontal, maxit = 100000, MaxNWts = 100000000000000)
+digit.multinom.all.features <- multinom(label ~ ., data = digit.train.all.features, maxit = 100000, MaxNWts = 100000000000000)
 
-digit.multinom.pred.horizontal <- predict(digit.multinom.horizontal, digit.test.horizontal[,-1],type="class")
+digit.multinom.pred.all.features <- predict(digit.multinom.all.features, digit.test.all.features[,-1],type="class")
 # make confusion matrix: true label vs. predicted label
-table(digit.test.horizontal$label,digit.multinom.pred.horizontal)
+table(digit.test.all.features$label,digit.multinom.pred.all.features)
 
 # make confusion matrix for predictions on test data
-multimodal.confmat.horizontal <- table(digit.test.horizontal$label,digit.multinom.pred.horizontal)
+multimodal.confmat.all.features <- table(digit.test.all.features$label,digit.multinom.pred.all.features)
 
 # use it to compute accuracy on test data
-sum(diag(multimodal.confmat.horizontal))/sum(multimodal.confmat.horizontal)
+sum(diag(multimodal.confmat.all.features))/sum(multimodal.confmat.all.features)
