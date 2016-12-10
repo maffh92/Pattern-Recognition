@@ -30,24 +30,24 @@ digit.tune.svm <- tune.svm(digit.train[, -1],digit.train$label, cost=1:10)
 # 10   10 0.084 0.03204164
 
 # Cost=1
-digit.svm <- svm(digit.train[, -1],digit.train$label,cost=3)
+digit.svm <- svm(digit.train[, -1],digit.train$label,cost=2)
 
 # make predictions on test set
 svm.pred <- predict(digit.svm, digit.test[,-1])
 
 svm.pred.table <- table(digit.test$label,svm.pred)
 # svm.pred.table 
-# 0    1    2    3    4    5    6    7    8    9
-# 0 3848    0   19    2    7   82   57    2   28    2
-# 1    0 4501   38    2    6   11    7    6    8    2
-# 2   23   13 3729   44   51   13   58   72   53    9
-# 3   10   50  105 3659    3  229   29   53   62   37
-# 4    4   25   34    0 3774    2   30    5    3   95
-# 5   13    7   22   63   33 3425   66   10   23   34
-# 6   23    6   13    0   14   44 3920    0    7    1
-# 7    8   44   44    7   81   14    2 3969    6  121
-# 8   16   74   61  116   40  130   33   28 3393   90
-# 9   23   25    4   37  214   24    2   94   21 3653
+0    1    2    3    4    5    6    7    8    9
+0 3843    0   20    2    8   84   57    2   29    2
+1    0 4501   35    3    6   13    7    5    9    2
+2   23   18 3725   44   57   12   56   70   51    9
+3   10   48  104 3655    4  234   31   54   61   36
+4    4   24   34    0 3769    2   29    5    2  103
+5   12    8   21   61   34 3429   62   10   24   35
+6   23    6   14    0   14   47 3916    0    7    1
+7    8   46   44    8   89   13    3 3953    6  126
+8   16   79   59  107   43  136   32   26 3395   88
+9   23   28    4   45  206   24    2   82   24 3659
 
 sum(diag(svm.pred.table))/sum(svm.pred.table)
-# [1] 0.9236829
+# [1] 0.9230488
